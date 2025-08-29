@@ -2,6 +2,8 @@
 
 
 from torch import nn
+import torch
+from typing import Optional,List
 
 class MuiltiHeadAttention(nn.Module):
 
@@ -12,7 +14,6 @@ class MuiltiHeadAttention(nn.Module):
         self.d_model = d_model
         self.num_heads = num_heads
         self.d_k = d_model // num_heads
-
 
         ## 线性变化层
         self.wq = nn.Linear(d_model, d_model)
@@ -27,7 +28,7 @@ class MuiltiHeadAttention(nn.Module):
         attn = scores.softmax(dim=-1)
         return attn @ v , attn
 
-    def forward(self, q, k, v, mask=None):
+    def attention_forward(self, q, k, v, mask=None):
         batch_size = q.size(0)
 
         # 线性变化并分头
@@ -47,3 +48,20 @@ class MuiltiHeadAttention(nn.Module):
 
 
 
+    def flash_attention_forward(self, q, k, v, mask:List[torch.tensor]=None):
+
+        """
+        q:query shape: (batch_size, seq_len,num_head, d_model)
+
+        K:key shape: (batch_size, seq_len,num_head, d_model)
+
+        v:value shape: (batch_size, seq_len,num_head, d_model)
+
+
+        
+        """
+
+
+        
+
+        
